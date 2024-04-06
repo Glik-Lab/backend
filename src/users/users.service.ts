@@ -96,10 +96,10 @@ export class UsersService {
       if (!user) {
         throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
       }
-      await this.userRepository.softDelete({ id: id });
+      await this.userRepository.softDelete({ id: +id });
       return await this.userRepository.findOne({
         where: {
-          id: id,
+          id: +id,
         },
         withDeleted: true,
       });

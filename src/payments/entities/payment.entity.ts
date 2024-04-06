@@ -3,14 +3,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('payments')
 export class Payment {
-  @PrimaryColumn({ name: 'id' })
-  id: string;
+  @PrimaryGeneratedColumn({ name: 'id' })
+  id: number;
 
   @Column({
     name: 'user_id',
@@ -39,7 +39,6 @@ export class Payment {
 
   @CreateDateColumn({
     name: 'created_at',
-    default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 

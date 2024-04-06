@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateCampaignDto } from './dto/create-campaign.dto';
-import { UpdateCampaignDto } from './dto/update-campaign.dto';
-import { Repository } from 'typeorm';
-import { Campaign } from './entities/campaign.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import Stripe from 'stripe';
+import { Repository } from 'typeorm';
+import { CreateCampaignDto } from './dto/create-campaign.dto';
+import { UpdateCampaignDto } from './dto/update-campaign.dto';
+import { Campaign } from './entities/campaign.entity';
 
 @Injectable()
 export class CampaignsService {
@@ -30,13 +30,14 @@ export class CampaignsService {
         active: true,
       });
 
-      const campaingData = {
+      const campaingData: Partial<Campaign> = {
         ...createCampaignDto,
         imageUrl: imageUrl,
         stripeId: newProduct?.id,
+        totalRaised: '0',
       };
-      const newCampaing = this.campaingRepository.create(campaingData);
-      return await this.campaingRepository.save(newCampaing);
+
+      return await this.campaingRepository.save(campaingData);
     } catch (error) {
       throw new HttpException(error?.message, HttpStatus.CONFLICT);
     }
@@ -54,7 +55,7 @@ export class CampaignsService {
     try {
       return await this.campaingRepository.findOne({
         where: {
-          id: id,
+          id: +id,
         },
       });
     } catch (error) {
